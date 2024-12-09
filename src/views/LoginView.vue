@@ -33,7 +33,7 @@
   const loginFn = async (credentials) => {
     console.log(credentials)
     try {
-      const response = await axios.post(`${apiUrl}/login`, credentials, {
+      const response = await axios.post(`${apiUrl}/login`,credentials, {
         headers: {
           'Content-Type': 'application/json'
         }
