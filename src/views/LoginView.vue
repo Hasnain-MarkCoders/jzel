@@ -31,16 +31,27 @@ const email = useField('email')
 
 // Login function using axios
 const loginFn = async (credentials) => {
+  console.log(credentials.email)
+  console.log(credentials.password)
+
   try {
-    const response = await axios.post(`${apiUrl}/login`, credentials)
+    const response = await axios({
+      url: `${apiUrl}/login`,
+      method: "post",
+      data: {
+        email : credentials.email,
+        password: credentials.password
+      }
+
+    })
     const data = response.data
 
     if (response.status === 200) {
-      
+
       userStore.setUser(data.user)
       userStore.setAccessToken(data.accessToken)
 
-      // Redirect to dashboard or homepage
+
       router.push('/')
     } else {
       throw new Error(data.message || 'Failed to authenticate. Check your credentials.')
@@ -67,19 +78,11 @@ const submit = handleSubmit((values) => {
 
       <!-- Login form -->
       <form class="login-form" @submit.prevent="submit">
-        <v-text-field
-          class="input-login"
-          v-model="email.value.value"
-          :error-messages="email.errorMessage.value"
-          label="E-mail"
-        ></v-text-field>
-        
-        <v-text-field
-          v-model="password.value.value"
-          :error-messages="password.errorMessage.value"
-          label="Password"
-          type="password"
-        ></v-text-field>
+        <v-text-field class="input-login" v-model="email.value.value" :error-messages="email.errorMessage.value"
+          label="E-mail"></v-text-field>
+
+        <v-text-field v-model="password.value.value" :error-messages="password.errorMessage.value" label="Password"
+          type="password"></v-text-field>
 
         <v-btn class="login-form-btn" type="submit">Submit</v-btn>
       </form>
